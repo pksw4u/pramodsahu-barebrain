@@ -1,0 +1,94 @@
+---
+import ArrowLink from '../components/ArrowLink.astro';
+import { DEV_ARTICLES, PUBLICATIONS } from '../consts';
+import Base from '../layouts/Base.astro';
+
+const [barebrain, dev] = PUBLICATIONS;
+---
+
+<Base
+  title="Writing"
+  path="/writing"
+  description="Essays and technical articles on AI systems, agents, automation and agent infrastructure by Pramod Sahu."
+>
+  <section class="shell pt-12 pb-4 md:pt-14 md:pb-6">
+    <h1 class="text-display">Writing</h1>
+    <p class="copy mt-3 max-w-[52ch]">
+      I publish in two places. Nothing is mirrored here — the writing lives where it is
+      published.
+    </p>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <h2 class="eyebrow">{barebrain.name}</h2>
+    <p class="mt-3 max-w-[46ch] text-[1.0625rem] leading-snug text-fg">
+      {barebrain.description}
+    </p>
+    <p class="mt-5">
+      <ArrowLink href={barebrain.href} external>Read on Substack</ArrowLink>
+    </p>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <h2 class="eyebrow">{dev.name}</h2>
+    <p class="mt-3 max-w-[46ch] text-[1.0625rem] leading-snug text-fg">
+      {dev.description}
+    </p>
+    <p class="mt-5">
+      <ArrowLink href={dev.href} external>Read on DEV</ArrowLink>
+    </p>
+
+    {
+      DEV_ARTICLES.length > 0 && (
+        <>
+          <div class="shell">
+            <hr class="mt-10" />
+          </div>
+          <ul>
+            {DEV_ARTICLES.map((article) => (
+              <li class="group/row border-t border-line py-5 first:border-t-0">
+                <div class="flex items-start justify-between gap-4">
+                  <a
+                    href={article.href}
+                    target="_blank"
+                    rel="noopener"
+                    class="text-entry font-medium"
+                  >
+                    <span class="entry-title -my-0.5 py-0.5">{article.title}</span>
+                  </a>
+                  <svg
+                    class="arrow mt-1 size-3.5 shrink-0 text-fg-muted"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 8h10M9 4l4 4-4 4" />
+                  </svg>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+  </section>
+
+  <section class="shell pb-12 md:pb-14">
+    <p class="meta">
+      Want an article on something specific?
+      <ArrowLink href="/contact" class="link ml-1">Ask me</ArrowLink>
+    </p>
+  </section>
+</Base>

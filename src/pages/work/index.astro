@@ -1,0 +1,100 @@
+---
+import ArrowLink from '../../components/ArrowLink.astro';
+import ProjectList from '../../components/ProjectList.astro';
+import Section from '../../components/Section.astro';
+import { CAPABILITIES, STACK_GROUPS } from '../../consts';
+import { getProjects, toListItem, type Project } from '../../lib/projects';
+import Base from '../../layouts/Base.astro';
+
+const projects = await getProjects();
+
+const groups: { label: string; description: string; match: Project['data']['kind'] }[] = [
+  {
+    label: 'Open source',
+    description: 'Agent infrastructure and research systems, built in public.',
+    match: 'open-source',
+  },
+  {
+    label: 'Experiments',
+    description: 'Small, self-contained questions asked on purpose.',
+    match: 'experiment',
+  },
+  {
+    label: 'Client work',
+    description: 'Automation systems built for real operating problems.',
+    match: 'client',
+  },
+];
+
+---
+
+<Base
+  title="Work"
+  path="/work"
+  description="AI automation systems, agent infrastructure and RAG projects by Pramod Sahu — open-source harnesses, experiments and delivered client work."
+>
+  <section class="shell pt-12 pb-4 md:pt-14 md:pb-6">
+    <h1 class="text-display">Work</h1>
+    <p class="copy mt-3 max-w-[52ch]">
+      {projects.length} case studies. Some are public repositories, some are client systems
+      documented as architecture rather than results.
+    </p>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  {
+    groups.map((group) => {
+      const items = projects
+        .filter((project) => project.data.kind === group.match)
+        .map(toListItem);
+
+      return (
+        <>
+          <div class="shell">
+            <hr />
+          </div>
+          <Section label={group.label} innerClass="pt-4">
+            <p class="copy mb-4 max-w-[52ch]">{group.description}</p>
+            <ProjectList items={items} />
+          </Section>
+        </>
+      );
+    })
+  }
+
+  <!-- Capabilities ----------------------------------------------------- -->
+  <Section label="What I build" innerClass="pt-4">
+    <dl class="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+      {
+        CAPABILITIES.map((capability) => (
+          <div class="border-t border-line py-6">
+            <dt class="text-entry font-medium">{capability.title}</dt>
+            <dd class="copy mt-2 max-w-[40ch]">{capability.body}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </Section>
+
+  <!-- Stack ------------------------------------------------------------- -->
+  <Section label="Systems I work with" innerClass="pt-4">
+    <dl class="grid grid-cols-1 gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        STACK_GROUPS.map((group) => (
+          <div class="border-t border-line py-5">
+            <dt class="eyebrow">{group.label}</dt>
+            <dd class="copy mt-2.5">{group.items.join(' · ')}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="meta mt-8">
+      Have a process in mind?
+      <ArrowLink href="/contact" class="link ml-1">Get in touch</ArrowLink>
+    </p>
+  </Section>
+</Base>

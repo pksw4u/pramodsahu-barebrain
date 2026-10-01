@@ -1,0 +1,70 @@
+---
+title: RAG Agent with LangGraph
+summary: Retrieval, reranking and generation assembled as a LangGraph pipeline.
+kind: open-source
+date: "2025-07-29"
+category: "RAG"
+order: 7
+featured: false
+year: 2025
+role: Pipeline design and implementation
+stack:
+  - Python
+  - LangGraph
+  - LangChain
+  - Supabase
+  - Cohere
+  - OpenAI
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/rag-langgraph-agent
+---
+
+## Overview
+
+A retrieval-augmented generation agent in Python, built on LangGraph and LangChain
+with Supabase for vector storage, Cohere for reranking, and OpenAI for generation. A
+Streamlit UI sits on top for uploading documents and asking questions about them.
+
+## Problem
+
+RAG systems tend to accumulate stages in one file. Ingestion, retrieval, reranking
+and generation get entangled, so changing the chunking strategy means touching the
+generation prompt, and there is no way to tell which stage produced a bad answer.
+
+## What I Built
+
+A modular pipeline with one job per module:
+
+<div class="diagram">
+
+```text
+documents -> ingestion -> chunking -> Supabase (pgvector)
+                                          |
+question -> retrieval -> Cohere rerank -> generation -> answer
+```
+
+</div>
+
+`RAGAgent` orchestrates the retrieval process, `supabase_client.py` owns the vector
+store, and `document_processor.py` handles chunking and ingestion. The Streamlit
+exposes retrieval and reranking details on demand, which is the difference between
+debugging a RAG app and guessing at it.
+
+## Architecture
+
+The `documents` table lives in Supabase with the `pgvector` extension enabled and a
+`match` function for similarity search. Conversation memory and document filters are
+the extension points left open in the original design.
+
+## Technology
+
+Python, LangGraph for orchestration, LangChain for retrieval, Supabase with pgvector
+for storage, Cohere for reranking, OpenAI for generation, and Streamlit for the
+interface. MIT licensed.
+
+## Outcome
+
+A working reference for the full retrieval path, with the stages separated enough
+that each one can be swapped. Worth reading as an early version of the retrieval
+work that later projects — the compounding wiki in particular — were a reaction to.

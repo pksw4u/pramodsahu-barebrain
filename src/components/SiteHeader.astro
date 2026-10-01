@@ -1,0 +1,112 @@
+---
+import { NAV, SITE } from '../consts';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-bg/95">
+  <div class="shell flex h-12 items-center justify-between gap-4 md:h-14">
+    <a
+      href="/"
+      class="py-1.5 text-[0.9375rem] font-semibold uppercase tracking-[0.08em] text-fg transition-colors duration-150 hover:text-accent"
+      aria-label={`${SITE.name} — home`}
+    >
+      Pramod Sahu
+    </a>
+
+    <div class="flex items-center gap-4 md:gap-5">
+      <nav aria-label="Primary" class="hidden md:block">
+        <ul class="flex items-center gap-4 md:gap-5">
+          {
+            NAV.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                  class:list={[
+                    'eyebrow py-1.5 transition-colors duration-150',
+                    isCurrent(item.href) ? 'text-accent' : 'hover:text-fg',
+                  ]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-1">
+        <ThemeToggle />
+        <button
+          type="button"
+          data-menu-toggle
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          class="eyebrow -mr-1.5 px-1.5 py-2 text-fg md:hidden"
+        >
+          <span data-menu-label>Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-menu" data-menu-panel hidden class="border-t border-line md:hidden">
+    <nav aria-label="Primary" class="shell py-1">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li class="border-b border-line last:border-0">
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                class:list={[
+                  'flex items-center justify-between py-2.5 transition-colors duration-150',
+                  isCurrent(item.href) ? 'text-accent' : 'text-fg-muted hover:text-fg',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+
+  if (toggle && panel && label) {
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Close' : 'Menu';
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Close on navigation, on Escape, and when returning to desktop width.
+    panel.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 48rem)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

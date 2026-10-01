@@ -1,0 +1,54 @@
+---
+title: Intelligent Invoice Processing
+summary: An OCR and local-LLM pipeline that turns unstructured invoices into structured fields.
+kind: client
+category: "Document AI"
+order: 14
+featured: false
+status: Completed
+role: Workflow design, local LLM integration, extraction logic, structured data mapping
+stack:
+  - OCR
+  - PDF parsing
+  - Local LLMs
+---
+
+## Overview
+
+A document-processing workflow combining OCR, PDF parsing, AI extraction, and
+structured data processing.
+
+## Problem
+
+Invoice data required repeatable extraction from unstructured documents. The same
+information arrived in a different layout on every supplier's invoice, so the work
+was manual, slow, and inconsistent.
+
+## What I Built
+
+A document pipeline where documents are received, parsed, extracted into structured
+fields, and passed through validation.
+
+<div class="diagram">
+
+```text
+document -> OCR -> PDF parsing -> AI extraction -> validation -> structured fields
+```
+
+</div>
+
+Two choices are worth naming. Extraction runs against local LLMs, which keeps
+invoice contents off third-party APIs. And validation sits after extraction rather
+than being folded into the prompt — a field that fails its check should be visible as
+a failure, not silently absent.
+
+## Technology
+
+OCR for text recovery, PDF parsing for layout, local LLMs for extraction, and
+structured data mapping for the output shape.
+
+## Outcome
+
+Designed as a foundation for dependable document processing: the pipeline is
+repeatable across invoice layouts rather than tuned to one. No client metrics are
+published for this project.

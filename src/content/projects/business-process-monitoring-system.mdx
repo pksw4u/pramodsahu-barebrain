@@ -1,0 +1,61 @@
+---
+title: Business Process Monitoring System
+summary: AI-powered monitoring for operational workflows, integrated with an ERP.
+kind: client
+category: "Process Monitoring"
+order: 10
+featured: true
+client: Maa Narayani Construction
+status: Completed
+role: Architecture design, LangGraph workflow design, Python integration, ERP connection
+stack:
+  - LangGraph
+  - Python
+  - ERP
+---
+
+## Overview
+
+An AI-powered business process monitoring system integrated with an ERP, built to
+give automated visibility into operational workflows.
+
+## Problem
+
+Operational workflows lacked clear, proactive visibility. Problems surfaced after
+the fact, through people asking around, rather than through the process itself
+reporting where it stood.
+
+## What I Built
+
+An agent graph connected to the ERP, designed around business workflow states rather
+than around the data that happened to be available.
+
+<div class="diagram">
+
+```text
+ERP  ->  workflow state  ->  agent graph  ->  operational follow-through
+```
+
+</div>
+
+Workflow data is connected, interpreted by the agent graph, and surfaced for
+operational follow-through. The graph is the interpretation layer: it turns a set of
+workflow states into something a person can act on, instead of a table they have to
+read themselves.
+
+## Architecture
+
+LangGraph handles the agent workflow, Python handles the integration, and the ERP
+stays the system of record. Nothing is duplicated out of the ERP — the monitoring
+layer reads and interprets.
+
+## Technology
+
+LangGraph for the agent workflow, Python for integration, and the client's ERP as the
+source of operational data.
+
+## Outcome
+
+Built to provide structured operational visibility. This case study documents
+architecture and decisions rather than results — the client's numbers are not public,
+so there are no metrics to quote here.

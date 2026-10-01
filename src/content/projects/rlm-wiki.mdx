@@ -1,0 +1,86 @@
+---
+title: rlm-wiki
+summary: A compounding markdown wiki for agents, instead of retrieval that starts from zero every query.
+kind: open-source
+date: "2026-06-25"
+category: "RAG"
+order: 3
+featured: true
+year: 2026
+status: Active
+role: Design and implementation
+stack:
+  - Python
+  - Markdown
+  - Wikilinks
+  - Local & hosted LLMs
+  - Hermes
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/rlm-wiki
+---
+
+## Overview
+
+A compounding knowledge base for agents. Rather than rediscovering knowledge on
+every query, rlm-wiki builds a structured, cross-referenced markdown wiki that
+accumulates across the documents it ingests.
+
+## Problem
+
+Retrieval has a specific weakness: it forgets. Two related questions asked an hour
+apart can retrieve the same overlapping chunks, produce two conflicting summaries,
+and leave nothing behind. The work of understanding a document is repeated rather
+than accumulated.
+
+The wiki inverts that. Knowledge gets written down once, linked to what it already
+relates to, and improved on the next pass.
+
+## What I Built
+
+| | RAG | rlm-wiki |
+| --- | --- | --- |
+| Knowledge persistence | Per-query retrieval | Persistent wiki pages |
+| Cross-referencing | None | `[[Wikilinks]]` |
+| Compounding | No (starts fresh each query) | Yes (builds on existing knowledge) |
+| Human-readable | No (vector chunks) | Yes (markdown files) |
+| Offline usable | No (needs a vector DB) | Yes (flat files) |
+| Obsidian compatible | No | Yes |
+
+The engine is split into three responsibilities — `IngestPipeline` for turning a
+source into wiki pages, `QueryEngine` for answering against what exists, and
+`MaintenanceEngine` for linting the result so the structure degrades gracefully
+over time.
+
+<div class="diagram">
+
+```python
+from rlm_wiki import WikiEngine, IngestPipeline, QueryEngine, MaintenanceEngine
+
+engine = WikiEngine()
+engine.initialize(domain="AI Safety Research")
+
+IngestPipeline(engine, llm_call=your_llm).ingest("https://arxiv.org/abs/2405.12345")
+
+qe = QueryEngine(engine, llm_call=your_llm)
+print(qe.query("How does reward hacking relate to multi-agent systems?").answer)
+
+for issue in MaintenanceEngine(engine).lint():
+    print(f"[{issue.severity}] {issue.message}")
+```
+
+</div>
+
+Models are tiered in configuration — a fast extractor, a fast decider, and a main
+model — so the cheap calls stay cheap.
+
+## Technology
+
+Python, plain markdown with YAML frontmatter and wikilinks, and pluggable LLM
+callables so the same engine runs against local models or hosted APIs.
+
+## Outcome
+
+Content is plain text, so the knowledge base is diffable, reviewable in Obsidian,
+and lives in git. `pytest` covers the engine. It installs as a Python package or as
+a Hermes skill, and shares a `WIKI_PATH` cleanly with `llm-wiki`.

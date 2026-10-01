@@ -1,0 +1,13 @@
+{
+  "name": "Pramod Sahu — AI Automation Engineer",
+  "short_name": "Pramod Sahu",
+  "description": "AI automation systems, agents and workflow automation by Pramod Sahu.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf9f6",
+  "theme_color": "#faf9f6",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,26 @@
+---
+import ArrowLink from '../components/ArrowLink.astro';
+import { NAV } from '../consts';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not found" path="/404" noindex>
+  <section class="shell pt-12 pb-4 md:pt-14 md:pb-6">
+    <p class="eyebrow">404</p>
+    <h1 class="mt-3 text-display">That page does not exist.</h1>
+    <p class="copy mt-3 max-w-[48ch]">
+      The link may be old, or the page may have moved. Nothing was broken on your end.
+    </p>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <ul class="flex flex-wrap gap-x-7 gap-y-2">
+      <li><ArrowLink href="/">Home</ArrowLink></li>
+      {NAV.map((item) => <li><ArrowLink href={item.href}>{item.label}</ArrowLink></li>)}
+    </ul>
+  </section>
+</Base>

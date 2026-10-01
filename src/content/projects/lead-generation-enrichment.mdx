@@ -1,0 +1,53 @@
+---
+title: Lead Generation & Enrichment
+summary: One workflow for collecting, enriching and routing leads instead of five disconnected tools.
+kind: client
+category: "Workflow Automation"
+order: 15
+featured: false
+status: Completed
+role: Automation design, API integrations, AI processing steps, workflow orchestration
+stack:
+  - n8n
+  - Make.com
+  - APIs
+  - AI
+---
+
+## Overview
+
+An automated lead-generation and enrichment workflow connecting data collection,
+external APIs, AI processing, and downstream business workflows.
+
+## Problem
+
+Lead research and enrichment involved multiple disconnected tools. Data moved by hand
+between them, so the pipeline stalled at every step where somebody had to remember to
+continue it.
+
+## What I Built
+
+An automation workflow that coordinates collection, enrichment, AI processing, and
+downstream routing.
+
+<div class="diagram">
+
+```text
+collect -> enrich (external APIs) -> AI processing -> downstream routing
+```
+
+</div>
+
+Orchestration is the whole design. Each stage is a service with a clear contract, and
+the workflow holds the sequence — which is what turns a checklist of tools into
+something that runs without supervision.
+
+## Technology
+
+n8n and Make.com for orchestration, external APIs for enrichment, and AI processing
+steps for the data that needs interpreting rather than copying.
+
+## Outcome
+
+Built to connect lead operations into a more systematic workflow. This case study
+documents the architecture; no client metrics are published.

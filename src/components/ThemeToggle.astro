@@ -1,0 +1,57 @@
+---
+/**
+ * Light/dark toggle. The initial theme is applied by an inline script in the
+ * document head, so this component only ships the button and its behaviour.
+ * Both icons are always rendered; CSS decides which one is visible.
+ */
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="-mr-1 grid size-8 place-items-center text-fg-muted transition-colors duration-150 hover:text-accent"
+  aria-label="Toggle colour theme"
+>
+  <svg
+    data-icon="sun"
+    class="size-4"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.25"
+    stroke-linecap="round"
+    aria-hidden="true"
+  >
+    <circle cx="8" cy="8" r="3.1"></circle>
+    <path d="M8 1.4v1.6M8 13v1.6M1.4 8h1.6M13 8h1.6M3.35 3.35l1.13 1.13M11.52 11.52l1.13 1.13M12.65 3.35l-1.13 1.13M4.48 11.52l-1.13 1.13"></path>
+  </svg>
+  <svg
+    data-icon="moon"
+    class="size-4"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.25"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M13.6 9.7A5.9 5.9 0 0 1 6.3 2.4a5.9 5.9 0 1 0 7.3 7.3Z"></path>
+  </svg>
+</button>
+
+<script>
+  const STORAGE_KEY = 'theme';
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+    button.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        /* private mode: the theme just will not persist */
+      }
+    });
+  }
+</script>

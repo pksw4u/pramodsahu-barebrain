@@ -1,0 +1,95 @@
+---
+title: Voice Harness
+summary: A voice conversation loop where the server owns the state, not the browser.
+kind: open-source
+date: "2026-09-21"
+category: "Voice AI"
+order: 4
+featured: true
+year: 2026
+status: Active
+role: Architecture, backend and frontend
+stack:
+  - TypeScript
+  - React
+  - FastAPI
+  - WebSockets
+  - ElevenLabs
+  - Python
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/Voice-Harness
+---
+
+## Overview
+
+A browser-based voice conversation loop:
+
+<div class="diagram">
+
+```text
+Microphone -> VAD -> STT -> LLM -> TTS -> Speaker
+```
+
+</div>
+
+The pipeline is ordinary. The design decision is where the truth lives: the backend
+is the source of truth for conversation state, and the browser renders it.
+
+## Problem
+
+Voice interfaces fail in the gaps between stages. The browser thinks it is
+listening while the server has already moved to transcribing; a stage fails and the
+interface simply goes quiet. Every such mismatch becomes a bug that only reproduces
+over a real network.
+
+## What I Built
+
+**Frontend** — React, TypeScript and Vite. Microphone capture via
+`@ricky0123/vad-web` (Silero v5, running fully in-browser with self-hosted assets),
+Web Audio playback of streamed PCM, and a single WebSocket to the backend.
+
+**Backend** — FastAPI, one WebSocket per conversation session. The server holds the
+state machine — `idle → listening → transcribing → thinking → speaking → error` —
+and pushes every transition to the client. Audio travels as binary frames;
+everything else is JSON text frames.
+
+**Providers** — `STTProvider`, `LLMProvider` and `TTSProvider` are abstract base
+classes. ElevenLabs (`scribe_v1` for STT, streaming `pcm_16000` for TTS) and an
+OpenAI-compatible LLM endpoint are implementations. Swapping a provider means
+writing one new class.
+
+The state machine, the frame protocol and the per-stage failure modes live in
+`state.py`, `messaging.py` and `pipeline.py`, and are covered by tests.
+
+## Architecture
+
+<div class="diagram">
+
+```text
+browser                          server
+-------                          ------
+mic -> VAD (Silero v5)
+     -- binary audio frame -->   STTProvider
+                                 LLMProvider
+                                 TTSProvider
+     <-- state transition ---    idle | listening | transcribing
+     <-- binary PCM frame ---    thinking | speaking | error
+speakers <-- Web Audio
+```
+
+</div>
+
+## Technology
+
+React and TypeScript with Vite on the front, FastAPI over WebSockets on the back,
+ElevenLabs for speech-to-text and streaming text-to-speech, and any
+OpenAI-compatible endpoint for generation. Python 3.11+ and Node 20+.
+
+## Outcome
+
+Phase 1 of a deliberate build. What it establishes is the protocol and the failure
+taxonomy — no stage can dead-end silently — which is the part that has to be right
+before conversation quality work means anything. In development, Vite proxies `/ws`
+to the backend; in production the backend serves the built frontend from the same
+origin.

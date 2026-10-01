@@ -1,0 +1,110 @@
+---
+title: Jev Research Harness
+summary: Decision infrastructure for an autonomous research agent.
+kind: open-source
+date: "2026-09-21"
+category: "Agent Infrastructure"
+order: 1
+featured: true
+year: 2026
+status: Active
+role: Architecture and implementation
+stack:
+  - Python
+  - LangGraph
+  - TypeSafe Jev
+  - LLM APIs
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/jev-research-agent
+  - label: TypeSafe
+    href: https://typesafe.ai
+---
+
+## Overview
+
+An experimental research agent where the division of labour is explicit rather
+than implied:
+
+| Responsibility | Owner |
+| --- | --- |
+| Reasoning and generation | A general-purpose LLM |
+| Decision making | TypeSafe Jev |
+| Execution | The harness and its tools |
+
+The dividing line is the point of the project. The language model understands the
+request, plans, and writes the answer. It does not decide what happens next. Jev
+makes that call, and the harness carries it out.
+
+> Jev decides what should happen. The harness executes the decision. The general
+> LLM handles understanding, planning, and generation. Jev never calls a tool
+> directly.
+
+## Problem
+
+Agent loops written in one prompt tend to collapse into a single fuzzy judgement.
+The model decides *and* reasons *and* acts, so the thing being optimised for —
+continue or stop, search or answer — gets buried inside a longer instruction that
+also has to produce good prose.
+
+Splitting the decision out makes the loop legible. The policy becomes code you can
+read, thresholds become numbers you can change, and a failure in the decision layer
+stops being a crash.
+
+## What I Built
+
+A LangGraph application in which two Jev decisions drive the loop.
+
+<div class="diagram">
+
+```text
+user request
+    -> understand_task   (LLM: understanding, plan, candidate queries)
+    -> select_action     (Jev: Choice over {search_web, search_news, finish})
+        -> execute_tool  (harness runs the selected search)
+            -> decide_continue (Jev: Noul — enough info?)
+            -> loop back to select_action, or
+    -> generate_answer   (LLM: synthesize findings)
+```
+
+</div>
+
+**Action selection** is a `Choice` question whose options are `search_web`,
+`search_news`, and `finish`. It returns a probability distribution rather than a
+single label, so the agent has a graded sense of which move is right instead of a
+coin flip between three options.
+
+**Sufficiency** is a `Noul` question — *has enough information been gathered to
+answer the request?* — whose probability is compared against a stop threshold.
+
+Every threshold lives in `app/decision/policy.py`, not in the model. If Jev is
+missing an API key or a call fails, the layer degrades to a deterministic policy
+fallback rather than taking the agent down with it.
+
+## Architecture
+
+```text
+app/
+  main.py            CLI entry point
+  graph/             state, nodes, LangGraph topology
+  decision/          Jev layer, typed schemas, policy/thresholds/fallback
+  llm/model.py       provider-agnostic chat model factory
+  tools/             search_web / search_news (harness execution)
+  prompts/           task understanding, planning, final answer
+tests/
+```
+
+The `llm/model.py` factory keeps the provider behind one interface, so the graph
+does not care which model is answering.
+
+## Technology
+
+Python, LangGraph, TypeSafe Jev, and standard LLM APIs through a provider-agnostic
+chat model. Tool execution is limited to web and news search.
+
+## Outcome
+
+The experiment is public and unfinished by design. What it demonstrates is that a
+decision layer can be extracted from a prompt, expressed as typed questions, given
+explicit thresholds, and made to fail safely — which is the piece most agent
+frameworks leave implicit.

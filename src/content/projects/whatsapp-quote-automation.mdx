@@ -1,0 +1,51 @@
+---
+title: WhatsApp Quote Automation
+summary: Requirements in, quotation out, follow-up sent on WhatsApp.
+kind: client
+category: "Workflow Automation"
+order: 13
+featured: false
+client: BS Electrical and Construction
+status: Completed
+role: n8n workflow design, integration setup, quotation automation, WhatsApp connection
+stack:
+  - n8n
+  - WhatsApp
+---
+
+## Overview
+
+An automated quotation workflow that connects customer requirements, quote
+generation, and communication over WhatsApp.
+
+## Problem
+
+Quotation creation and client communication involved manual coordination. Requirements
+arrived over WhatsApp, someone assembled the quote by hand, and the client waited.
+
+## What I Built
+
+A workflow in which customer details and requirements enter the system, quotation
+data is generated, and the result is communicated back to the customer.
+
+<div class="diagram">
+
+```text
+requirements -> quotation steps -> quote generated
+            -> WhatsApp follow-up -> client
+```
+
+</div>
+
+The value is in removing the hand-off. The same channel the enquiry arrived on is
+where the quote returns, so there is no second system for anyone to learn.
+
+## Technology
+
+n8n for the workflow and WhatsApp as the customer-facing channel.
+
+## Outcome
+
+A structured automation foundation for handling quote requests, removing the manual
+coordination step between requirement and reply. No client metrics are published for
+this project.

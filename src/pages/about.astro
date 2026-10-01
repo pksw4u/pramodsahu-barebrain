@@ -1,0 +1,114 @@
+---
+import ArrowLink from '../components/ArrowLink.astro';
+import { EXPLORING, SITE, SOCIALS } from '../consts';
+import Base from '../layouts/Base.astro';
+
+const facts = [
+  { label: 'Location', value: SITE.location },
+  { label: 'Role', value: SITE.role },
+  { label: 'Currently on', value: 'LangGraph, n8n, agent memory' },
+  { label: 'Education', value: 'B.Sc., Sambalpur University, Odisha' },
+];
+---
+
+<Base
+  title="About"
+  path="/about"
+  description="Pramod Sahu is an AI Automation Engineer focused on agent orchestration, workflow automation, RAG, decision systems and agent infrastructure."
+>
+  <section class="shell pt-12 pb-4 md:pt-14 md:pb-6">
+    <h1 class="text-display">About</h1>
+    <p class="mt-3 max-w-[48ch] text-[1.0625rem] leading-snug text-fg">
+      I'm Pramod, an AI Automation Engineer focused on building practical AI systems across
+      agent orchestration, workflow automation, RAG, decision systems, and agent infrastructure.
+    </p>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <div class="prose">
+      <p>
+        I design and build AI-powered systems that turn repetitive, fragmented processes into
+        reliable workflows that can operate with minimal human intervention. My work spans AI
+        agents, n8n and Make.com automation, RAG and knowledge systems, voice AI, API
+        integrations, and the infrastructure required to connect these systems to real-world
+        applications.
+      </p>
+      <p>
+        I'm particularly interested in the engineering layer behind reliable agents — how they
+        reason, select tools, maintain context, make decisions, recover from failures, and
+        execute multi-step tasks safely.
+      </p>
+      <p>
+        Alongside building, I write and research about
+        <strong>agentic systems and emerging AI technologies</strong>. The focus is the
+        infrastructure that makes autonomous agents reliable in practice, beyond simple LLM
+        tool-calling loops — and specifically
+        <strong>
+          agent harness architecture, agent loop design, memory, tool orchestration, decision
+          layers, failure recovery, and sandboxed execution
+        </strong>.
+      </p>
+      <p>
+        My approach is simple: understand the process first, choose the least complicated
+        technology that solves the problem, and build systems that are reliable, observable,
+        and maintainable.
+      </p>
+    </div>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <h2 class="eyebrow">Details</h2>
+    <dl class="mt-4 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
+      {
+        facts.map((fact) => (
+          <div>
+            <dt class="eyebrow">{fact.label}</dt>
+            <dd class="mt-1.5">{fact.value}</dd>
+          </div>
+        ))
+      }
+
+      <div>
+        <dt class="eyebrow">Links</dt>
+        <dd class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
+          {
+            SOCIALS.map((social) => (
+              <a href={social.href} target="_blank" rel="me noopener" class="link-quiet -my-0.5 py-1">
+                {social.label}
+              </a>
+            ))
+          }
+          <a href="mailto:spramod4ai@gmail.com" class="link-quiet -my-0.5 py-1">Email</a>
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <h2 class="eyebrow">Currently exploring</h2>
+    <ul class="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+      {
+        EXPLORING.map((item) => (
+          <li class="meta">{item}</li>
+        ))
+      }
+    </ul>
+
+    <p class="meta mt-8">
+      The systems behind this are listed in
+      <ArrowLink href="/work" class="link ml-1">the work</ArrowLink>.
+    </p>
+  </section>
+</Base>

@@ -1,0 +1,485 @@
+/*
+ * Font faces — latin subsets only, self-hosted through the bundler.
+ * Geist Mono is the structural voice of the site; Geist Sans carries long-form prose.
+ */
+
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist/files/geist-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+20AC, U+2122, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Geist Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+ * Design tokens
+ *
+ * Dark is the default and primary mode. Light is a paper-white alternative.
+ * Every text value is contrast-checked against its own background:
+ *   dark  (#1F2635)  ink 12.8:1 · muted 6.1:1 · accent 5.7:1
+ *   light (#FBFAF8)  ink 16.1:1 · muted 5.0:1 · accent 5.4:1
+ * ---------------------------------------------------------------------------
+ */
+
+:root {
+  --bg: #1f2635;
+  --bg-subtle: #262e40;
+  --bg-inset: #1a202c;
+  --fg: #e8ebf2;
+  --fg-muted: #9aa3b5;
+  --line: #2f394d;
+  --line-strong: #3d4a63;
+  --accent: #e8853c;
+
+  /* 48rem — a narrow centred column with generous margins on wide screens. */
+  --shell: 48rem;
+  /* Long-form prose is narrower still, because sans has lower character density. */
+  --prose: 40rem;
+
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #fbfaf8;
+  --bg-subtle: #f2f0ec;
+  --bg-inset: #f7f5f1;
+  --fg: #1a1c22;
+  --fg-muted: #6b7280;
+  --line: #e4e2dc;
+  --line-strong: #cbc8bf;
+  --accent: #b45309;
+
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-bg-inset: var(--bg-inset);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+
+  /*
+   * Compact scale. Nothing on this site exceeds 1.5rem — hierarchy comes from
+   * weight, colour, spacing and rules, not from size.
+   */
+  --text-display: 1.5rem;
+  --text-display--line-height: 1.25;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 600;
+
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.3;
+  --text-title--letter-spacing: -0.015em;
+  --text-title--font-weight: 500;
+
+  --text-lead: 1rem;
+  --text-lead--line-height: 1.6;
+  --text-lead--letter-spacing: -0.005em;
+
+  --text-entry: 1.0625rem;
+  --text-entry--line-height: 1.4;
+  --text-entry--letter-spacing: -0.012em;
+
+  --text-meta: 0.6875rem;
+  --text-meta--line-height: 1;
+  --text-meta--letter-spacing: 0.14em;
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    letter-spacing: -0.005em;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
+    /* Only the theme crossfades; nothing else animates on the site. */
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 26%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---- layout ----------------------------------------------------------- */
+
+  .shell {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  /* ---- type helpers ----------------------------------------------------- */
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--fg-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Body copy: sans, because mono at paragraph length is hard to read. */
+  .copy {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    letter-spacing: -0.006em;
+    color: var(--fg-muted);
+  }
+
+  /* ---- links ------------------------------------------------------------ */
+
+  /* Accent title with a dashed underline: the signature of a content list. */
+  .entry-title {
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .entry-title:hover,
+  .entry-title:focus-visible {
+    text-decoration-color: var(--accent);
+  }
+
+  .link {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in srgb, var(--fg) 30%, transparent);
+    transition:
+      text-decoration-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .link:hover,
+  .link:focus-visible {
+    text-decoration-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .link-quiet {
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .link-quiet:hover,
+  .link-quiet:focus-visible {
+    color: var(--accent);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform 150ms ease;
+  }
+
+  .group\/row:hover .arrow,
+  .group\/row:focus-visible .arrow {
+    transform: translate(3px, -3px);
+  }
+
+  /* Theme toggle icons: sun by default, moon in light mode. */
+  [data-icon='sun'] {
+    display: block;
+  }
+
+  [data-icon='moon'] {
+    display: none;
+  }
+
+  [data-theme='light'] [data-icon='sun'] {
+    display: none;
+  }
+
+  [data-theme='light'] [data-icon='moon'] {
+    display: block;
+  }
+
+  /* ---- long-form prose -------------------------------------------------- */
+
+  .prose {
+    max-width: var(--prose);
+    font-family: var(--font-sans);
+    color: var(--fg);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .prose > * + * {
+    margin-top: 1.15em;
+  }
+
+  .prose h2 {
+    margin-top: 2.75rem;
+    margin-bottom: -0.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 400;
+    scroll-margin-top: 6rem;
+  }
+
+  .prose h3 {
+    margin-top: 2rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .prose p,
+  .prose li {
+    color: var(--fg);
+  }
+
+  .prose ul,
+  .prose ol {
+    padding-left: 1.15rem;
+    list-style: none;
+  }
+
+  .prose li {
+    position: relative;
+  }
+
+  .prose li + li {
+    margin-top: 0.4em;
+  }
+
+  .prose ul > li::before {
+    content: '—';
+    position: absolute;
+    left: -1.15rem;
+    color: var(--fg-muted);
+  }
+
+  .prose ol {
+    counter-reset: prose-ol;
+  }
+
+  .prose ol > li {
+    counter-increment: prose-ol;
+  }
+
+  .prose ol > li::before {
+    content: counter(prose-ol) '.';
+    position: absolute;
+    left: -1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--fg-muted);
+  }
+
+  .prose strong {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .prose a:hover,
+  .prose a:focus-visible {
+    text-decoration-color: var(--accent);
+  }
+
+  .prose blockquote {
+    border-left: 1px solid var(--line-strong);
+    padding-left: 1.15rem;
+    color: var(--fg-muted);
+    font-style: normal;
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.8125em;
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.1em 0.35em;
+  }
+
+  .prose pre {
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    tab-size: 2;
+  }
+
+  .prose pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  .prose table {
+    width: 100%;
+    font-size: 0.9375rem;
+    border-collapse: collapse;
+  }
+
+  .prose th,
+  .prose td {
+    text-align: left;
+    padding: 0.45rem 0.75rem 0.45rem 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+
+  .prose th {
+    font-family: var(--font-mono);
+    font-size: var(--text-meta);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    font-weight: 400;
+  }
+
+  .prose hr {
+    margin-block: 2.5rem;
+  }
+
+  .prose > :first-child {
+    margin-top: 0;
+  }
+
+  /* Plain-text architecture blocks, tinted so they read as figures. */
+  .prose .diagram {
+    margin-block: 2rem;
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1rem 1.1rem;
+    font-size: 0.75rem;
+    line-height: 1.55;
+  }
+
+  .prose .diagram pre {
+    margin: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    overflow-x: auto;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .prose .diagram code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+}

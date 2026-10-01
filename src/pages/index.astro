@@ -1,0 +1,140 @@
+---
+import ArrowLink from '../components/ArrowLink.astro';
+import ProjectList from '../components/ProjectList.astro';
+import Section from '../components/Section.astro';
+import { PUBLICATIONS, SITE, STACK } from '../consts';
+import { getFeaturedProjects, toListItem } from '../lib/projects';
+import Base from '../layouts/Base.astro';
+
+const items = (await getFeaturedProjects()).map(toListItem);
+---
+
+<Base>
+  <section class="shell pt-14 pb-6 md:pt-16 md:pb-8">
+    <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-5">
+      <a href="/" class="shrink-0">
+        <img
+          src="/avatar.svg"
+          alt={`${SITE.name} avatar`}
+          class="size-24 rounded-full border border-line/80 sm:size-28"
+          width="128"
+          height="128"
+          decoding="async"
+        />
+      </a>
+
+      <div class="min-w-0">
+        <h1 class="text-display">Hi, I'm Pramod.</h1>
+        <p class="mt-2 text-[1.0625rem] leading-snug text-fg">
+          AI Automation Engineer building AI-powered workflows, agents and intelligent systems.
+        </p>
+        <p class="copy mt-2.5">
+          Agents, RAG, voice AI and workflow automation — process first, model second.
+        </p>
+
+        <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+          <a href="https://github.com/pksw4u/" target="_blank" rel="me noopener" class="link-quiet py-1">GitHub</a>
+          <a href="https://www.linkedin.com/in/pramoda-sahu-10b194132" target="_blank" rel="me noopener" class="link-quiet py-1">LinkedIn</a>
+          <a href="https://dev.to/pramod_sahu_d5bd2e6de82d1/" target="_blank" rel="me noopener" class="link-quiet py-1">DEV</a>
+          <a href="https://barebrain.substack.com/" target="_blank" rel="me noopener" class="link-quiet py-1">Substack</a>
+          <a href="mailto:spramod4ai@gmail.com" class="link-quiet py-1">Email</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <Section label="Recent work" id="work">
+    <Fragment slot="aside">
+      <ArrowLink href="/work" class="eyebrow link-quiet -my-2 py-2 hover:text-accent">All work</ArrowLink>
+    </Fragment>
+
+    <ProjectList items={items} />
+  </Section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <Section label="Stack">
+    <dl class="mt-1">
+      {
+        STACK.map((group) => (
+          <div class="border-t border-line py-3 first:border-t-0 sm:flex sm:items-baseline sm:gap-6">
+            <dt class="eyebrow shrink-0 sm:w-36">{group.label}</dt>
+            <dd class="mt-1.5 font-mono text-[0.8125rem] leading-relaxed text-fg sm:mt-0">
+              {group.items.join(' · ')}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </Section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <Section label="Writing" innerClass="pt-5">
+    <Fragment slot="aside">
+      <ArrowLink href="/writing" class="eyebrow link-quiet -my-2 py-2 hover:text-accent">All writing</ArrowLink>
+    </Fragment>
+
+    <ul>
+      {
+        PUBLICATIONS.map((publication) => (
+          <li class="border-t border-line py-5 first:border-t-0">
+            <div class="flex items-start justify-between gap-4">
+              <div class="min-w-0">
+                <h3 class="text-entry font-medium">
+                  <a
+                    href={publication.href}
+                    target="_blank"
+                    rel="noopener"
+                    class="entry-title -my-0.5 py-0.5"
+                  >
+                    {publication.name}
+                  </a>
+                </h3>
+                <p class="copy mt-2">{publication.description}</p>
+              </div>
+              <svg
+                class="arrow mt-1 size-3.5 shrink-0 text-fg-muted"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M3 8h10M9 4l4 4-4 4" />
+              </svg>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <Section label="About" id="about">
+    <p class="copy max-w-[54ch]">
+      I'm Pramod, an AI Automation Engineer focused on building practical AI systems across
+      agent orchestration, workflow automation, RAG, decision systems, and agent infrastructure.
+    </p>
+    <p class="copy mt-3 max-w-[54ch]">
+      I write and research about <strong class="font-semibold text-fg"
+        >agentic systems</strong
+      > — agent harnesses, loop design, memory, tool orchestration, decision layers and sandboxed
+      execution. My approach is simple: understand the process first, then choose the least
+      complicated technology that solves the problem.
+    </p>
+  </Section>
+</Base>

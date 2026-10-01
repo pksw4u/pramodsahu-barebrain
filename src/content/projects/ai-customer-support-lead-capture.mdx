@@ -1,0 +1,54 @@
+---
+title: AI Customer Support & Lead Capture
+summary: An AI assistant that answers inbound enquiries and captures leads through n8n.
+kind: client
+category: "Support Automation"
+order: 11
+featured: true
+client: AB Infotech And Suppliers
+status: Completed
+role: Conversation design, RAG workflow, n8n integration, lead-routing automation
+stack:
+  - n8n
+  - RAG
+  - LLM
+---
+
+## Overview
+
+A customer-facing AI assistant for handling inbound enquiries, wired into lead
+capture so structured details flow onward automatically.
+
+## Problem
+
+Incoming enquiries and the lead information inside them needed a more consistent
+handoff. The information existed, but it arrived as conversation and left as
+conversation — retyped, summarised inconsistently, or lost.
+
+## What I Built
+
+An assistant that responds using business context, captures intent, and passes
+structured details into n8n.
+
+<div class="diagram">
+
+```text
+enquiry -> assistant (RAG over business context)
+        -> intent + structured details
+        -> n8n  ->  lead routing
+```
+
+</div>
+
+The RAG layer is what keeps the assistant's answers grounded in the business rather
+than plausible. Once intent and details are structured, the rest is workflow: n8n
+takes over and the lead reaches the right place without anyone retyping it.
+
+## Technology
+
+n8n for orchestration, RAG for grounded responses, and an LLM for conversation.
+
+## Outcome
+
+Designed to create a practical, repeatable enquiry-to-lead workflow. This case study
+documents the architecture rather than results; no client metrics are published here.

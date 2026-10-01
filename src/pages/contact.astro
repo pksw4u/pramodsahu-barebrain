@@ -1,0 +1,56 @@
+---
+import { EMAIL, EMAIL_HREF, SOCIALS } from '../consts';
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Contact"
+  path="/contact"
+  description="Get in touch with Pramod Sahu about AI automation systems, agents and intelligent business workflows."
+>
+  <section class="shell pt-12 pb-4 md:pt-14 md:pb-6">
+    <h1 class="text-display">Contact</h1>
+    <p class="mt-3 max-w-[50ch] text-[1.0625rem] leading-snug text-fg">
+      I am interested in AI automation systems, agents and intelligent business workflows —
+      the kind where the process is real, repetitive, and currently depends on someone
+      remembering to do it.
+    </p>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <h2 class="eyebrow">Email</h2>
+    <a href={EMAIL_HREF} class="link mt-3 inline-block break-all text-[1.0625rem]">
+      {EMAIL}
+    </a>
+    <p class="copy mt-4 max-w-[50ch]">
+      No specific brief yet? That is fine — describing the process you want to stop doing
+      by hand is usually enough to start.
+    </p>
+  </section>
+
+  <div class="shell">
+    <hr />
+  </div>
+
+  <section class="shell py-10 md:py-12">
+    <h2 class="eyebrow">Elsewhere</h2>
+    <dl class="mt-4 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-3">
+      {
+        SOCIALS.map((social) => (
+          <div>
+            <dt class="eyebrow">{social.label}</dt>
+            <dd class="mt-1.5">
+              <a href={social.href} target="_blank" rel="me noopener" class="link-quiet -my-1 py-1">
+                {social.handle}
+              </a>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+</Base>

@@ -1,0 +1,56 @@
+---
+title: Voice Electrical Troubleshooting Agent
+summary: A voice support agent that walks customers through electrical troubleshooting.
+kind: client
+category: "Voice AI"
+order: 12
+featured: false
+client: BS Electrical and Construction
+status: Completed
+role: Voice flow design, Vapi configuration, Twilio integration, troubleshooting scenario mapping
+stack:
+  - Vapi
+  - Twilio
+  - Voice AI
+---
+
+## Overview
+
+A voice-based AI customer support system for an electrical contractor, designed to
+help customers begin troubleshooting electrical issues over the phone.
+
+## Problem
+
+Customers needed a more immediate way to start troubleshooting. Previously the first
+step was a phone call that queued, and the technician's time was spent on questions
+that could have been answered before they arrived.
+
+## What I Built
+
+A conversational voice support system built around guided troubleshooting scenarios.
+
+<div class="diagram">
+
+```text
+caller -> Vapi voice agent -> scenario mapping
+                          -> guided troubleshooting
+                          -> escalate with context when required
+```
+
+</div>
+
+Calls are handled by the voice agent, which guides issue discovery and escalates
+context where required. The scenario mapping is the substantive part: it encodes
+which questions to ask in which order for a given electrical complaint, so the
+conversation is diagnostic rather than merely conversational.
+
+## Technology
+
+Vapi for the voice agent, Twilio for telephony, and a conversational AI platform for
+the speech pipeline.
+
+## Outcome
+
+Built as a practical customer-support automation concept — troubleshooting starts at
+first contact and the technician receives context instead of a blank ticket. No
+client metrics are published for this project.

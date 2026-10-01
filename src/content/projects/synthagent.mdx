@@ -1,0 +1,85 @@
+---
+title: SynthAgent
+summary: A meta-agent that writes its own prompt, tool plan and strategy for each task.
+kind: open-source
+date: "2026-06-19"
+category: "Agent Systems"
+order: 5
+featured: false
+year: 2026
+status: Active
+role: Design and implementation
+stack:
+  - Python
+  - NVIDIA NIM
+  - Tavily
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/synthagent
+---
+
+## Overview
+
+An autonomous meta-agent that dynamically generates prompts, tool plans, and
+strategies for whatever task it is handed. Inference runs through NVIDIA NIM, web
+search through Tavily.
+
+## Problem
+
+A fixed system prompt is a bet on the task. It encodes the plan for the kind of
+request you anticipated and degrades on the kind you did not. The alternative —
+writing a bespoke prompt per task — does not scale past a handful of examples.
+
+## What I Built
+
+A meta-prompt generator sits upstream of the agent and produces three artifacts per
+task: the task prompt `P`, the tool plan `T`, and the strategy `S`. Those artifacts
+are what the agent loop actually runs.
+
+<div class="diagram">
+
+```text
+                      +--------------------------+
+TASK (free-form) ---> |  META-PROMPT GENERATOR   |
++ success criteria   |  (MPG)                   |
+                      +------------+-------------+
+                                   | synthesizes
+                                   v
+                      +--------------------------+
+                      |  TASK PROMPT P           |
+                      |  + TOOL PLAN T           |
+                      |  + STRATEGY S            |
+                      +------------+-------------+
+                                   | runs inside
+                                   v
+  +----------------------------------------------------------+
+  |                    SYNTHAGENT (the loop)                  |
+  |                                                          |
+  |   +---------+   plan    +---------+   tool calls  +-----+ |
+  |   | PLANNER | --------> | EXECUTOR | ------------> | ENV | |
+  |   +----+----+           +----+-----+                +--+--+ |
+  |        ^                     |  observations            |    |
+  |        |  replan             v                         |    |
+  |        |              +---------+                      |    |
+  |        +-------------- | MEMORY  | <-------------------+    |
+  |                        +---------+                           |
+  +----------------------------------------------------------+
+```
+
+</div>
+
+The inner loop is a Planner–Executor–Verifier–Reflector cycle: the executor works
+against the environment, observations return to memory, and the planner replans when
+what came back does not match the success criteria.
+
+## Technology
+
+Python, NVIDIA NIM for inference, Tavily for search. The architecture is expressed
+as four explicit stages rather than a single prompt.
+
+## Outcome
+
+The system takes an open-ended task plus the criteria for success, and produces its
+own plan before executing it. Useful mainly as a study of whether strategy synthesis
+survives contact with a real environment — the interesting failure modes are in the
+replan path.

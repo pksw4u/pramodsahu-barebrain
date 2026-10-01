@@ -1,0 +1,72 @@
+---
+title: Hermes Telegram Webhook
+summary: A small Flask service that connects Telegram messages to Hermes Agent.
+kind: open-source
+date: "2026-03-28"
+category: "Agent Systems"
+order: 9
+featured: false
+year: 2026
+role: Design and implementation
+stack:
+  - Python
+  - Flask
+  - Telegram Bot API
+  - Hermes Agent
+  - Webhooks
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/telegram-webhook-bot
+---
+
+## Overview
+
+Telegram delivers messages through a webhook, not a polling loop. This is a Flask
+application that receives those webhook posts and hands them to Hermes Agent.
+
+## Problem
+
+An agent that only works in a terminal is an agent you have to be sitting at. Getting
+a phone-sized front end onto an agent means dealing with the platform's delivery
+model — webhook verification, a public HTTPS endpoint, and process lifetime — which
+is plumbing, not engineering.
+
+## What I Built
+
+A Flask app with the webhook route and a small helper route that registers the
+webhook URL with Telegram, so setup is one request rather than a console command.
+Configuration is two environment variables: `BOT_TOKEN` and `CHAT_ID`.
+
+```
+pip install -r requirements.txt
+gunicorn app:app
+```
+
+Locally, `ngrok http 5000` exposes the app so the same flow can be tested without
+deploying.
+
+## Architecture
+
+<div class="diagram">
+
+```text
+Telegram  --POST /webhook-->  Flask app  -->  Hermes Agent
+     <-- sendMessage --------      |
+                                   v
+                            reply back to chat
+```
+
+</div>
+
+`CHAT_ID` restricts the handler to a single conversation, which keeps an open
+webhook endpoint from becoming a way for strangers to drive the agent.
+
+## Technology
+
+Python, Flask, `gunicorn` as the WSGI server, and the Telegram Bot API. The original
+deployment path was a free Render web service.
+
+## Outcome
+
+A deployable bridge between a messaging app and an agent: clone, set two
+environment variables, run under gunicorn, register the webhook, done.

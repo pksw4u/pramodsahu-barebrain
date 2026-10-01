@@ -1,0 +1,64 @@
+---
+title: Agent from Scratch
+summary: A tool-using agent built without a framework, to see what the loop actually is.
+kind: experiment
+date: "2025-10-10"
+category: "Agents"
+order: 8
+featured: false
+year: 2025
+role: Design and implementation
+stack:
+  - Python
+  - Gemini
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/ai-agent-from-scratch-python
+---
+
+## Overview
+
+A fully functional AI agent in Python with no agent framework underneath it. The
+goal was to read the loop rather than inherit it: conversational memory, a tool
+registry, and an agentic reasoning loop powered by Gemini 2.0 Flash.
+
+## Problem
+
+Frameworks are good at the boring parts and quiet about the important one. The
+sequence — send history, read the tool call, execute it, append the result, repeat
+— disappears behind an abstraction, and it is exactly that sequence that decides
+whether an agent terminates, loops, or lies about having finished.
+
+## What I Built
+
+<div class="diagram">
+
+```text
+ai-agent-scratch/
+  agent.py        core agent logic and model integration
+  memory.py       conversation history and context management
+  tools.py        tool registry, schemas and execution
+  main.py         interactive CLI
+  test_gemini.py  test suite
+  .env            API keys
+```
+
+</div>
+
+**Conversational memory** keeps context across turns with a configurable history
+limit. **Tool use** is an extensible registry — calculator, time and note-taking
+built in — with schemas generated for the model. **The agentic loop** handles
+multi-step reasoning with autonomous tool selection and execution, and conversation
+history can be saved and reloaded.
+
+## Technology
+
+Python with Google Gemini 2.0 Flash, managed with `uv`. No agent framework — the
+point was to avoid one.
+
+## Outcome
+
+A working agent with the loop exposed, short enough to read end to end, and a test
+suite for the parts that can be tested without a live key. The lesson it encodes:
+most of what a framework sells is loop control and memory management, and both are
+small enough to own outright.

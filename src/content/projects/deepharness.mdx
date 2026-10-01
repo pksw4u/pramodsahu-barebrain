@@ -1,0 +1,84 @@
+---
+title: DeepHarness
+summary: An execution runtime for tool-using agents — memory, skills, sub-agents and scheduling.
+kind: open-source
+date: "2026-09-27"
+category: "Agent Infrastructure"
+order: 2
+featured: true
+year: 2026
+status: Active
+role: Design and implementation
+stack:
+  - Python
+  - SQLite FTS5
+  - Cron
+  - Multi-provider LLMs
+  - Ollama
+  - OpenRouter
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/DeepHarness
+---
+
+## Overview
+
+A tool-using agent that runs a real tool-calling loop. The model can execute shell
+commands, read and write files inside a sandboxed working directory, search the
+web, store memories, and delegate work to sub-agents — and every call is recorded.
+
+The interesting part is not the tool list. It is the machinery around a task that
+makes an agent usable on a schedule instead of a one-off prompt: durable memory,
+reusable skills, bounded concurrency, and an audit trail.
+
+## Problem
+
+Most agent demos are a loop and a chat box. The interesting failures show up later,
+when the same agent has to run unattended: state that vanishes between sessions,
+skills that only exist inside a prompt, sub-agents that recurse until they hang, and
+tool calls you cannot audit after the fact.
+
+## What I Built
+
+- **Persistent memory** — SQLite with FTS5 full-text search, an indexed run id for
+  audit, and automatic index repair.
+- **Tool-calling loop** — a bounded number of steps per task, with every tool call
+  audited and secret-looking arguments masked before they are stored.
+- **Parallel sub-agents** — up to `agent.max_parallel_subagents` concurrent workers,
+  each with its own working directory, and a hard delegation depth limit so
+  recursion terminates.
+- **Skills** — markdown files with YAML frontmatter, loaded from `./skills/`.
+- **Cron scheduling** — standard five-field cron, persisted between runs.
+- **Safety gates** — destructive shell commands, redirections, and skill deletion all
+  require explicit confirmation.
+- **Secret hygiene** — keys live in `.env` (written owner-only), never in
+  `config.yaml`, and are redacted from logs, tool errors, and notifications.
+- **Onboarding wizard** — interactive first-time setup.
+
+## Architecture
+
+The provider is the seam that matters. Anthropic, Google Gemini, OpenAI,
+OpenAI-compatible endpoints (NVIDIA NIM, OpenRouter, vLLM) and Ollama are all
+supported, and switching between them is a configuration change rather than a code
+change. Ollama needs no API key at all, which makes the whole runtime testable
+locally.
+
+```
+python main.py --onboarding                    # configure provider, write config.yaml + .env
+python main.py --task "Summarise the files in this directory"
+python main.py --interactive
+```
+
+Installed as a package, the same entry point is available as `deep-harness`.
+
+## Technology
+
+Python 3.10+, SQLite with FTS5, standard cron, and a provider abstraction covering
+hosted APIs, OpenAI-compatible endpoints and local models through Ollama.
+
+## Outcome
+
+An agent runtime that survives contact with a schedule. The pieces that make that
+possible — FTS5 memory, skill files on disk, a delegation depth limit, masked
+arguments in the audit log — are the substance of the project. Requires an API key
+for whichever provider you use, unless you run Ollama.

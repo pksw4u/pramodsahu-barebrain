@@ -1,0 +1,75 @@
+---
+title: Agent Loop Benchmark
+summary: The same deterministic agent loop in Python, TypeScript and Rust, measured against each other.
+kind: experiment
+date: "2026-09-27"
+category: "Benchmarks"
+order: 6
+featured: false
+year: 2026
+role: Benchmark design and implementation
+stack:
+  - Python
+  - TypeScript
+  - Rust
+links:
+  - label: GitHub
+    href: https://github.com/pksw4u/agent-loop-benchmark
+---
+
+## Overview
+
+A deliberately minimal benchmark. The same agent loop is implemented three times and
+run a million times, to measure what the loop itself costs before any model or
+network call is involved.
+
+## Problem
+
+Agent discussions tend to conflate two very different costs: the latency of the
+model and the latency of everything around it. The loop — observe, decide, execute,
+update state, repeat — is cheap per step and runs for thousands of steps. That
+overhead is rarely measured, so it never appears in a design decision.
+
+## What I Built
+
+Three implementations of one deterministic loop:
+
+<div class="diagram">
+
+```text
+Initialize state
+      |
+Observe state
+      |
+Decide next action
+      |
+Execute simulated tool
+      |
+Update state
+      |
+Repeat
+      |
+Stop
+```
+
+</div>
+
+The decision and the tool are intentionally deterministic. No LLM, no API, no
+filesystem, no network. That is the point: whatever the numbers show is the
+runtime, not the model.
+
+## Outcome
+
+All three implementations produce the same final value. Same machine, 1,000,000
+iterations, 3 trials, best of 5 runs each:
+
+| Language | Best time | ns/iter | Iterations/s | Relative to Python |
+| --- | ---: | ---: | ---: | ---: |
+| Python 3.12.3 | 675.4 ms | 675 | 1,480,531 | 1× |
+| TypeScript (Node 22.22) | 4.33 ms | 4.3 | 230,776,385 | 156× |
+| Rust 1.98.1 (release, LTO) | 1.09 ms | 1.1 | 917,418,568 | 620× |
+
+The benchmark measures the overhead of repeatedly executing the deterministic agent
+loop. It does not measure model latency, network latency, or real agent workloads —
+and it is not a recommendation to rewrite agents in Rust. It is a way to find out
+whether the loop is worth arguing about, before spending the argument.

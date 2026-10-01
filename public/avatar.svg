@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Pramod Sahu">
+  <circle cx="100" cy="100" r="99" fill="#262e40" stroke="#3d4a63" stroke-width="2" />
+  <text
+    x="100"
+    y="100"
+    fill="#e8853c"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="72"
+    font-weight="500"
+    letter-spacing="-2"
+    text-anchor="middle"
+    dominant-baseline="central"
+  >PS</text>
+</svg>
