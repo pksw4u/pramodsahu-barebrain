@@ -65,7 +65,7 @@ Routes: `/`, `/work`, `/work/<slug>` (15), `/about`, `/writing`, `/contact`, `40
 
 ## Development
 
-Requires Node.js 22.12 or newer. The version is pinned by the committed `.node-version`
+Requires Node.js 22.23.4 or newer. The version is pinned by the committed `.node-version`
 file, which Cloudflare Pages also reads.
 
 ```bash
@@ -240,7 +240,7 @@ beyond the defaults is required.
 | Framework preset | Astro |
 | Build command | `npm run build` |
 | Build output directory | `dist` |
-| Node version | `22.12` or newer — handled by the committed `.node-version` file |
+| Node version | `24` (pinned by the committed `.node-version` file) |
 | Install command | `npm ci` |
 
 Steps:
