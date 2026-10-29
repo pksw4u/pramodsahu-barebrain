@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Single source of truth for identity, links and site-level copy.
  * Everything the visitor can click or read about "who this is" lives here.
  */
@@ -10,14 +10,14 @@ export const SITE = {
    */
   url: 'https://pramodsahu.pages.dev',
   name: 'Pramod Sahu',
-  role: 'AI Automation Engineer',
-  title: 'Pramod Sahu — AI Automation Engineer',
+  role: 'AI Automation Specialist',
+  title: 'Pramod Sahu â€” AI Automation Specialist',
   description:
-    'AI Automation Engineer building agents, RAG systems and workflow automation that turn complex business processes into working systems.',
+    'AI Automation Specialist with hands-on experience designing and building AI-powered business automation systems using n8n, Make.com, LLMs, APIs, webhooks, RAG, and AI agents. I build solutions that automate repetitive business processes across customer support, sales, lead management, document processing, and operations.',
   locale: 'en',
   /** Text used for the generated /og image and favicon wordmark. */
   initials: 'PS',
-  location: 'Odisha, India',
+  location: 'Bargarh, Odisha, India',
 } as const;
 
 export type NavItem = { label: string; href: string };
@@ -29,15 +29,17 @@ export const NAV: NavItem[] = [
 ];
 
 /**
- * Tools used across the work below, grouped by role. Portfolio-level claims —
+ * Tools used across the work below, grouped by role. Portfolio-level claims â€”
  * unlike per-project `stack` frontmatter, these are not tied to one repository.
  */
 export const STACK: { label: string; items: string[] }[] = [
-  { label: 'Languages', items: ['Python', 'TypeScript', 'JavaScript'] },
-  { label: 'AI / Agents', items: ['LangGraph', 'LangChain', 'Deep Agents', 'Hermes Agent'] },
-  { label: 'Automation', items: ['n8n', 'Make', 'APIs', 'Webhooks'] },
-  { label: 'RAG / Data', items: ['Supabase', 'Pinecone', 'Qdrant', 'Cohere'] },
-  { label: 'Models / Infra', items: ['Gemini', 'OpenAI', 'Ollama', 'OpenRouter', 'Docker'] },
+  { label: 'Languages', items: ['Python', 'TypeScript', 'JavaScript', 'Rust'] },
+  { label: 'AI / Agents', items: ['LangGraph', 'LangChain', 'Deep Agents', 'RAG', 'Prompt Engineering'] },
+  { label: 'Automation', items: ['n8n', 'Make.com', 'Workflow Automation', 'AI Document Processing'] },
+  { label: 'Agent roles', items: ['Autonomous AI Agents', 'AI Co-worker', 'AI Employee', 'Always-on AI Assistant'] },
+  { label: 'Voice', items: ['Vapi', 'Twilio', 'Retell', 'ElevenLabs'] },
+  { label: 'Models / Data', items: ['Gemini', 'OpenAI', 'Ollama', 'OpenRouter', 'Supabase', 'Pinecone', 'Qdrant', 'Cohere'] },
+  { label: 'Spoken', items: ['English', 'Hindi', 'Odia'] },
 ];
 
 export type SocialLink = { label: string; href: string; handle: string };
@@ -75,7 +77,7 @@ export const PUBLICATIONS = [
 
 /**
  * Articles published on DEV. Titles and links are the real ones from the
- * profile — nothing here is generated or paraphrased.
+ * profile â€” nothing here is generated or paraphrased.
  */
 export const DEV_ARTICLES = [
   {
@@ -132,7 +134,7 @@ export const CAPABILITIES = [
   },
   {
     title: 'Workflow automation',
-    body: 'Business processes rebuilt as n8n and Make.com workflows — webhooks, APIs and third-party integrations wired together.',
+    body: 'Business processes rebuilt as n8n and Make.com workflows â€” webhooks, APIs and third-party integrations wired together.',
   },
   {
     title: 'RAG & knowledge systems',
@@ -142,15 +144,20 @@ export const CAPABILITIES = [
     title: 'Voice AI',
     body: 'Receptionist and support agents built on real-time speech-to-text, conversational turns and text-to-speech.',
   },
+  {
+    title: 'Document processing',
+    body: 'Invoices and documents turned into structured data through OCR, PDF parsing and local language models.',
+  },
 ] as const;
 
 /** Grouped technology list, straight from the existing portfolio. */
 export const STACK_GROUPS = [
-  { label: 'Automation', items: ['n8n', 'Make.com'] },
-  { label: 'AI & LLMs', items: ['LLM APIs', 'RAG', 'Prompt engineering', 'AI agents', 'Local LLMs', 'Tool calling'] },
-  { label: 'Agent frameworks', items: ['LangGraph', 'LangChain', 'DeepAgents'] },
+  { label: 'Automation', items: ['n8n', 'Make.com', 'Workflow Automation'] },
+  { label: 'AI & LLMs', items: ['LLM APIs', 'RAG', 'Prompt Engineering', 'AI Agents', 'Local LLMs', 'Tool Calling'] },
+  { label: 'Agent frameworks', items: ['LangGraph', 'LangChain', 'Deep Agents'] },
   { label: 'Voice AI', items: ['Vapi', 'Retell', 'ElevenLabs', 'Twilio'] },
-  { label: 'Data & retrieval', items: ['Pinecone', 'Supabase', 'Vector search', 'Reranking'] },
-  { label: 'Integration', items: ['REST APIs', 'Webhooks', 'Shopify APIs'] },
-  { label: 'Document AI', items: ['OCR', 'PDF parsing', 'Structured data extraction'] },
+  { label: 'Data & retrieval', items: ['Pinecone', 'Supabase', 'Qdrant', 'Cohere', 'Vector search', 'Reranking'] },
+  { label: 'Integration', items: ['REST APIs', 'Webhooks'] },
+  { label: 'Document AI', items: ['OCR', 'PDF Parsing', 'Structured Data Extraction'] },
+  { label: 'Languages', items: ['Python', 'TypeScript', 'JavaScript', 'Rust'] },
 ] as const;

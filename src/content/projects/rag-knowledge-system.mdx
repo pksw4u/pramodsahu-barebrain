@@ -1,0 +1,49 @@
+---
+title: RAG Knowledge System
+summary: A RAG workflow in n8n that grounds AI responses in business-specific information.
+kind: client
+category: "RAG"
+order: 19
+featured: false
+client: AB Infotech And Suppliers
+status: Completed
+role: RAG workflow design, n8n integration, knowledge grounding
+stack:
+  - n8n
+  - RAG
+  - LLM
+---
+
+## Overview
+
+A RAG workflow built in n8n to enable AI responses grounded in business-specific
+information, so answers reflect the company's own knowledge rather than generic model
+output.
+
+## Problem
+
+AI responses about the business were ungrounded and unreliable. Customers and staff
+needed answers drawn from the company's actual information, not plausible guesses.
+
+## What I Built
+
+An n8n workflow that retrieves relevant business knowledge and feeds it into the AI
+response, keeping answers grounded in the source material.
+
+<div class="diagram">
+
+```text
+question -> retrieval over business knowledge -> grounded context -> LLM -> answer
+```
+
+</div>
+
+## Technology
+
+n8n for orchestration, RAG for grounded responses, and an LLM for generation.
+
+## Outcome
+
+Designed to provide context-aware responses based on business knowledge. This case
+study documents the architecture rather than results; no client metrics are published
+here.

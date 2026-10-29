@@ -1,6 +1,6 @@
 # pramodsahu.dev
 
-Personal portfolio of **Pramod Sahu** — AI Automation Engineer.
+Personal portfolio of **Pramod Sahu** — AI Automation Specialist.
 
 A small, fast, static site built with Astro. It is intentionally text-first: no
 CMS, no database, no client-side framework, and no build-time content pulled from

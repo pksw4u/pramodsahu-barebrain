@@ -1,0 +1,50 @@
+---
+title: RAG with Supabase and Pinecone
+summary: Retrieval-augmented AI systems using vector databases, reranking and local language models.
+kind: client
+category: "RAG"
+order: 22
+featured: false
+status: Completed
+role: RAG workflow design, vector storage, reranking, local LLM integration
+stack:
+  - n8n
+  - Supabase
+  - Pinecone
+  - Reranking
+  - Local LLMs
+---
+
+## Overview
+
+Retrieval-augmented AI systems built using vector databases, reranking, and local
+language models to provide context-aware responses based on business knowledge.
+
+## Problem
+
+AI responses needed to be grounded in business-specific knowledge, with retrieval and
+reranking tuned to the actual question rather than generic model output.
+
+## What I Built
+
+A RAG pipeline that stores knowledge in vector databases, retrieves and reranks
+relevant passages, and generates responses with local language models.
+
+<div class="diagram">
+
+```text
+question -> vector retrieval (Supabase / Pinecone) -> reranking -> local LLM -> answer
+```
+
+</div>
+
+## Technology
+
+n8n for orchestration, Supabase and Pinecone for vector storage, reranking for
+relevance, and local LLMs for generation.
+
+## Outcome
+
+Designed to provide context-aware responses based on business knowledge. This case
+study documents the architecture rather than results; no client metrics are published
+here.
